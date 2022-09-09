@@ -3,14 +3,15 @@
 //  Movie
 //
 //  Created by javad faghih on 9/6/22.
-//  Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+//  Copyright (c) 2022 Javad Faghih. All rights reserved.
 
 import UIKit
 import Alamofire
 
 protocol SearchMoviesViewControllerDelegate {
 
-    func viewDidload()
+   func requestForSearchMovie(with: String)
+   func requestForNexPageIfNedded()
 }
 
 typealias SearchMoviesViewControllerInput = SearchMoviesPresenterDelegate
@@ -22,7 +23,7 @@ class SearchMoviesViewController: UIViewController {
     
     var interactor: SearchMoviesViewControllerDelegate?
     var router: (NSObjectProtocol & SearchMoviesRoutingLogic & SearchMoviesDataPassing)?
-    var items: SearchMovieResponseModel!
+    var items: [SearchMovies.Models.SearchViewModel]!
     
     
   // MARK: Object lifecycle
@@ -67,76 +68,45 @@ class SearchMoviesViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
   
-      interactor?.viewDidload()
       configureSearchController()
       configureTableView()
   }
     
     private func configureSearchController() {
         let search = UISearchController(searchResultsController: nil)
-        search.searchResultsUpdater = self
         search.searchBar.delegate = self
         search.obscuresBackgroundDuringPresentation = false
         search.searchBar.placeholder = "search Movies"
         navigationItem.searchController = search
     }
     
-    private func requestForSearchMovie(with word: String, page: Int = 1) {
-        
-        let baseURL = NetworkRequirment.baseURL.rawValue
-        let searchMoviewEndPoint = Search.searchMovie.rawValue
-        let apiKey = NetworkRequirment.apiKey.rawValue
-        
-        let requestURL = "\(baseURL)\(searchMoviewEndPoint)?api_key=\(apiKey)&language=en-US&query=\(word)&page=\(page)&include_adult=false"
-        
-       let urlString = requestURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-
-
-        print(urlString)
-        AF.request(urlString).responseData { response in
-            switch response.result {
-                
-            case .success(let data):
-               
-                let str = String(bytes: data, encoding: .utf8)
-                print(str!)
-                
-                if  let model = try? JSONDecoder().decode(SearchMovieResponseModel.self, from: data) {
-                    self.items = model
-                    self.tableView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
-        
-        
-    }
-    
     private func configureTableView() {
         tableView.register(UINib(nibName: SearchTableViewCell.reuseIdentifier, bundle: Bundle.main), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
+        tableView.tableFooterView = UIView()
     }
 }
 
      //MARK: - Presenter Delegate
 extension SearchMoviesViewController: SearchMoviesViewControllerInput {
    
-    func displayItemList(viewModel: SearchMovies.Models.ViewModel) {
-      //nameTextField.text = viewModel.name
-        
+    func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel]) {
+        self.items = viewModel
+        tableView.reloadData()
     }
 }
 
 extension SearchMoviesViewController: UITableViewDelegate, UITableViewDataSource {
   
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items?.results?.count ?? 0
+        return items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       guard  let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else { return UITableViewCell() }
-        cell.configureCell(title: items!.results![indexPath.row].title ?? "")
+       
+        if let item = (items?[indexPath.row]) {
+            cell.configureCell(with: item)
+        }
         return cell
     }
     
@@ -145,15 +115,25 @@ extension SearchMoviesViewController: UITableViewDelegate, UITableViewDataSource
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UIScreen.main.bounds.height * 0.15
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            if (indexPath.row + 2) == items.count {
+                interactor?.requestForNexPageIfNedded()
+        }
+    }
+
 }
 
-extension SearchMoviesViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    
-    func updateSearchResults(for searchController: UISearchController) { }
+extension SearchMoviesViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
-
-           requestForSearchMovie(with: text)
+        interactor?.requestForSearchMovie(with: text)
        }
+    
+    
 }

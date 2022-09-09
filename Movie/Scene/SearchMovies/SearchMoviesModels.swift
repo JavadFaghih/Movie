@@ -22,8 +22,12 @@ enum SearchMovies {
     
     }
    
-      struct ViewModel {
-   
+      struct SearchViewModel {
+        let title: String
+        let originalTitle: String
+        let originalLanguage: String
+        let releaseDate: String
+        let posterImageURL: String
       }
       
   }

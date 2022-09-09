@@ -5,11 +5,11 @@
 //  Created by Javad on 08.09.22.
 //
 
-import Foundation
+import UIKit
 
 struct SearchMovieResponseModel: Codable {
     let page: Int?
-    let results: [Result]?
+    let results: [SearchMovieResult]
     let totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -20,7 +20,7 @@ struct SearchMovieResponseModel: Codable {
 }
 
 // MARK: - Result
-struct Result: Codable {
+struct SearchMovieResult: Codable {
     let adult: Bool?
     let backdropPath: String?
     let genreIDS: [Int]?
@@ -32,7 +32,21 @@ struct Result: Codable {
     let video: Bool?
     let voteAverage: Double?
     let voteCount: Int?
-
+    var baseURL: String {
+        get {
+            
+            let defaults = UserDefaults.standard
+            let data = defaults.data(forKey: UserDefaultsKey.apiConfiguration.rawValue) ?? Data()
+            
+            if  let configuration = try? JSONDecoder().decode(Splash.GetAPIConfigurationResponseModel.self, from: data) {
+                
+                return (configuration.images?.secureBaseURL ?? "https://image.tmdb.org/t/p/") + (configuration.images?.posterSizes?.first ?? "w92")
+                
+            }
+            return "https://image.tmdb.org/t/p/w92"
+        }
+    }
+    
     enum CodingKeys: String, CodingKey {
         case adult
         case backdropPath = "backdrop_path"
@@ -46,6 +60,17 @@ struct Result: Codable {
         case title, video
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
+    }
+    
+    func convertToDisplayableModel() -> SearchMovies.Models.SearchViewModel {
+        
+        let model = SearchMovies.Models.SearchViewModel(title: title ?? "",
+                                                        originalTitle: originalTitle ?? "",
+                                                        originalLanguage: originalLanguage ?? "",
+                                                        releaseDate: releaseDate ?? "",
+                                                        posterImageURL: "\(baseURL)\(posterPath ?? "")")
+        return model
+        
     }
 }
 
