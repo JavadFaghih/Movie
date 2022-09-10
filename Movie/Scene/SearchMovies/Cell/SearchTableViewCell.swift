@@ -39,10 +39,11 @@ class SearchTableViewCell: UITableViewCell {
         self.originalTitleLabel.text = model.originalTitle
         self.releaseDateLabel.text = model.releaseDate
         self.orignialLanguageLabel.text = model.originalLanguage
-      
+        
         if let url = URL(string: model.posterImageURL) {
+            self.posterImageView.kf.indicatorType = .activity
             self.posterImageView.kf.setImage(with: url,
-                                             placeholder: UIImage(named: "appLogo"),
+                                             placeholder: UIImage(named: "Logo"),
                                              options: [.cacheOriginalImage])
             
         }

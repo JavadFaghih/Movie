@@ -11,6 +11,7 @@ import UIKit
 protocol SearchMoviesPresenterDelegate: AnyObject {
  
     func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel])
+    func displayError(with descrptions: String)
 }
 
 typealias SearchMoviesPresenterInput = SearchMoviesinteractorDelegate
@@ -26,5 +27,8 @@ class SearchMoviesPresenter: SearchMoviesPresenterInput {
         
         self.viewController?.displayItemList(viewModel: displayModel)
         }
+    }
+    func presentError(with description: String) {
+        self.viewController?.displayError(with: description)
     }
 }

@@ -40,7 +40,7 @@ struct SearchMovieResult: Codable {
             
             if  let configuration = try? JSONDecoder().decode(Splash.GetAPIConfigurationResponseModel.self, from: data) {
                 
-                return (configuration.images?.secureBaseURL ?? "https://image.tmdb.org/t/p/") + (configuration.images?.posterSizes?.first ?? "w92")
+                return (configuration.images?.secureBaseURL ?? "https://image.tmdb.org/t/p/") + (configuration.images?.posterSizes?.last ?? "w92")
                 
             }
             return "https://image.tmdb.org/t/p/w92"
@@ -67,8 +67,8 @@ struct SearchMovieResult: Codable {
         let model = SearchMovies.Models.SearchViewModel(title: title ?? "",
                                                         originalTitle: originalTitle ?? "",
                                                         originalLanguage: originalLanguage ?? "",
-                                                        releaseDate: releaseDate ?? "",
-                                                        posterImageURL: "\(baseURL)\(posterPath ?? "")")
+                                                        releaseDate: releaseDate?.justYear ?? "",
+                                                        posterImageURL: "\(baseURL)\(posterPath ?? "")", overView: overview ?? "")
         return model
         
     }

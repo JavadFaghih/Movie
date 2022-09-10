@@ -18,7 +18,7 @@ class SplashRouter: NSObject, SplashRoutingLogic {
     private  let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 
     func changeRoot() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { self.changeRootController() }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { self.changeRootController() }
     }
     
     private func changeRootController() {
@@ -27,12 +27,12 @@ class SplashRouter: NSObject, SplashRoutingLogic {
         let windowScene = scenes.first as? UIWindowScene
         guard let window = windowScene?.windows.first else { return }
 
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "SearchNavigationController")  as? UINavigationController else { return }
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "MaiTabbarContrller")  as? UITabBarController else { return }
 
         window.rootViewController = vc
 
         let options: UIView.AnimationOptions = .transitionCrossDissolve
-        let duration: TimeInterval = 0.7
+        let duration: TimeInterval = 0.3
 
         UIView.transition(with: window, duration: duration, options: options, animations: {})
         

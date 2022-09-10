@@ -10,23 +10,58 @@ import UIKit
 
 protocol MovieDetailsinteractorDelegate {
 
-    func presentSomething(response: MovieDetails.Models.Response)
+    func presentMovieDetails(response: MovieDetails.Models.ViewModel)
 }
 
 protocol MovieDetailsDataStore {
-  //var name: String { get set }
+    var id: Int! { get set }
 }
 
 typealias MovieDetailsInteractorInput = MovieDetailsViewControllerDelegate
 
 class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore {
-
+  
+    var id: Int!
     var presenter: MovieDetailsinteractorDelegate?
     var worker: MovieDetailsWorker?
-  //var name: String = ""
   
   // MARK: Do something
     func viewDidload() {
         
+        worker = MovieDetailsWorker()
+      //  downloadImage()
+        getMovieDetails(with: id)
+    }
+    
+//    private func downloadImage() {
+//        guard let model = response else { return }
+//        let url = model.baseUrl + model.backdropPath
+//
+//        worker?.loadImage(url: url) { [weak self] image in
+//
+//            self?.presenter?.presentMovieDetails(response: MovieDetails.Models.ViewModel(title: model.details,
+//                                                                                   image: image))
+//        }
+//    }
+    
+    private func getMovieDetails(with id: Int) {
+        self.worker?.getMovieDetails(with: id) { result in
+            
+            switch result {
+            
+            case .success(let object):
+                print(object)
+            case .failure(let error):
+                switch error {
+                
+                case .timeOut:
+                    break
+                case .noData:
+                    break
+                case .failed:
+                    break
+                }
+            }
+        }
     }
 }

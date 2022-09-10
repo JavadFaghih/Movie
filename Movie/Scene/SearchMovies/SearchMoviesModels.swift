@@ -28,6 +28,7 @@ enum SearchMovies {
         let originalLanguage: String
         let releaseDate: String
         let posterImageURL: String
+        let overView: String
       }
       
   }

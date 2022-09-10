@@ -3,7 +3,7 @@
 //  Movie
 //
 //  Created by javad faghih on 9/6/22.
-//  Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+//  Copyright (c) 2022 Javad Faghih. All rights reserved.
 
 import UIKit
 
@@ -16,6 +16,10 @@ typealias MovieDetailsViewControllerInput = MovieDetailsPresenterDelegate
 
 class MovieDetailsViewController: UIViewController {
  
+    @IBOutlet weak var movieImageView: UIImageView!
+    @IBOutlet weak var movieDetailsLabel: UITextView!
+    
+    
     var interactor: MovieDetailsViewControllerDelegate?
     var router: (NSObjectProtocol & MovieDetailsRoutingLogic & MovieDetailsDataPassing)?
 
@@ -69,7 +73,8 @@ class MovieDetailsViewController: UIViewController {
 extension MovieDetailsViewController: MovieDetailsViewControllerInput {
    
     func displayItemList(viewModel: MovieDetails.Models.ViewModel) {
-      //nameTextField.text = viewModel.name
+        movieDetailsLabel.text = viewModel.title
+        movieImageView.image = UIImage(data: viewModel.image!)
         
     }
 }

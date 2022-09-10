@@ -13,6 +13,8 @@ typealias SplashInteractorInput = SplashViewControllerDelegate
 
 class SplashInteractor: SplashInteractorInput {
 
+    //TODO: call config api each 24 hour
+    
     var worker: SplashNetWorkWorker?
   
     func viewDidload() {
