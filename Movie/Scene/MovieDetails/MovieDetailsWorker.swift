@@ -21,6 +21,7 @@ class MovieDetailsWorker {
                 complation(data)
             case .failure(let error):
                 print(error.localizedDescription)
+                complation(nil)
             }
         }
     }

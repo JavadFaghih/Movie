@@ -11,57 +11,90 @@ import UIKit
 protocol MovieDetailsinteractorDelegate {
 
     func presentMovieDetails(response: MovieDetails.Models.ViewModel)
+    func presentError(message: String)
 }
 
 protocol MovieDetailsDataStore {
     var id: Int! { get set }
+    var details: MovieDetails.Models.MovieDetailsResponse? { get }
 }
 
 typealias MovieDetailsInteractorInput = MovieDetailsViewControllerDelegate
 
 class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore {
-  
+    
+    var details: MovieDetails.Models.MovieDetailsResponse?
     var id: Int!
     var presenter: MovieDetailsinteractorDelegate?
     var worker: MovieDetailsWorker?
-  
-  // MARK: Do something
+    var baseURL: String {
+        get {
+            
+            let defaults = UserDefaults.standard
+            let data = defaults.data(forKey: UserDefaultsKey.apiConfiguration.rawValue) ?? Data()
+            
+            if  let configuration = try? JSONDecoder().decode(Splash.GetAPIConfigurationResponseModel.self, from: data) {
+                
+                return (configuration.images?.secureBaseURL ?? "https://image.tmdb.org/t/p/") + (configuration.images?.posterSizes?.last ?? "w92")
+                
+            }
+            return "https://image.tmdb.org/t/p/w92"
+        }
+    }
+    var image: Data?
+   
+    
+    // MARK: Do something
     func viewDidload() {
         
         worker = MovieDetailsWorker()
-      //  downloadImage()
         getMovieDetails(with: id)
     }
     
-//    private func downloadImage() {
-//        guard let model = response else { return }
-//        let url = model.baseUrl + model.backdropPath
-//
-//        worker?.loadImage(url: url) { [weak self] image in
-//
-//            self?.presenter?.presentMovieDetails(response: MovieDetails.Models.ViewModel(title: model.details,
-//                                                                                   image: image))
-//        }
-//    }
-    
     private func getMovieDetails(with id: Int) {
-        self.worker?.getMovieDetails(with: id) { result in
+   
+        self.worker?.getMovieDetails(with: id) { [weak self] result in
             
             switch result {
             
             case .success(let object):
-                print(object)
+                self?.details = object
+                self?.getImage()
             case .failure(let error):
-                switch error {
-                
-                case .timeOut:
-                    break
-                case .noData:
-                    break
-                case .failed:
-                    break
-                }
+                self?.presenter?.presentError(message: error.description)
+            }
+            
+        }
+    }
+    
+    
+    private func releaseDetails(with details: MovieDetails.Models.MovieDetailsResponse) {
+        
+        
+        
+        defer {
+            presenter?.presentMovieDetails(response: viewModel)
+        }
+        
+       
+        let viewModel = MovieDetails.Models.ViewModel(overView: details.overview ?? "---",
+                                                      image: image,
+                                                      title: details.title ?? "---",
+                                                      budget: String(details.budget ?? 0),
+                                                      status: details.status ?? "---",
+                                                      vote: String(details.voteAverage ?? 0),
+                                                      popularity: String(details.popularity ?? 0),
+                                                      imdb: details.imdbID ?? "---")
+    }
+    
+    
+    private func getImage() {
+        
+            let url = self.baseURL + (self.details!.backdropPath ?? "")
+            
+            self.worker?.loadImage(url: url) { data in
+                self.image = data
+                self.releaseDetails(with: self.details!)
             }
         }
     }
-}

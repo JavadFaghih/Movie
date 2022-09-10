@@ -116,11 +116,11 @@
 			children = (
 				4D0ED57728CBEBEC00208798 /* Cell */,
 				4D0ED56D28CBE97F00208798 /* SettingsViewController.swift */,
+				4D0ED56E28CBE97F00208798 /* SettingsInteractor.swift */,
 				4D0ED56928CBE97F00208798 /* SettingsPresenter.swift */,
 				4D0ED56A28CBE97F00208798 /* SettingsWorker.swift */,
 				4D0ED56B28CBE97F00208798 /* SettingsRouter.swift */,
 				4D0ED56C28CBE97F00208798 /* SettingsModels.swift */,
-				4D0ED56E28CBE97F00208798 /* SettingsInteractor.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -182,10 +182,10 @@
 		4D4F251628C79D2C00A6DA4E /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				4D0ED56828CBE96100208798 /* Settings */,
 				6DA63FD028CA10DD00FCDAAA /* SplashScreen */,
 				4D4F251728C79D3800A6DA4E /* SearchMovies */,
 				4D4F251828C79D4500A6DA4E /* MovieDetails */,
+				4D0ED56828CBE96100208798 /* Settings */,
 			);
 			path = Scene;
 			sourceTree = "<group>";

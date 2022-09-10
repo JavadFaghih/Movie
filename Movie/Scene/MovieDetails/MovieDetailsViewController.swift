@@ -16,9 +16,14 @@ typealias MovieDetailsViewControllerInput = MovieDetailsPresenterDelegate
 
 class MovieDetailsViewController: UIViewController {
  
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var movieDetailsLabel: UITextView!
-    
+    @IBOutlet weak var posterImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var budgetLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var voteAverageLabel: UILabel!
+    @IBOutlet weak var popularityLabel: UILabel!
+    @IBOutlet weak var imdbIDlabel: UILabel!
+    @IBOutlet weak var overViewLabel: UILabel!
     
     var interactor: MovieDetailsViewControllerDelegate?
     var router: (NSObjectProtocol & MovieDetailsRoutingLogic & MovieDetailsDataPassing)?
@@ -73,8 +78,14 @@ class MovieDetailsViewController: UIViewController {
 extension MovieDetailsViewController: MovieDetailsViewControllerInput {
    
     func displayItemList(viewModel: MovieDetails.Models.ViewModel) {
-        movieDetailsLabel.text = viewModel.title
-        movieImageView.image = UIImage(data: viewModel.image!)
+        posterImageView.image = viewModel.image != nil ?  UIImage(data: viewModel.image!) : UIImage(named: "Logo")
+        overViewLabel.text = viewModel.overView
+        titleLabel.text = viewModel.title
+        budgetLabel.text = viewModel.budget
+        statusLabel.text = viewModel.status
+        voteAverageLabel.text = viewModel.vote
+        popularityLabel.text = viewModel.popularity
+        imdbIDlabel.text = viewModel.imdb
         
     }
 }

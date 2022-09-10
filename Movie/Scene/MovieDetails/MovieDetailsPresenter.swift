@@ -24,4 +24,8 @@ class MovieDetailsPresenter: MovieDetailsPresenterInput {
         
         viewController?.displayItemList(viewModel: response)
     }
+    func presentError(message: String) {
+        
+    }
+    
 }

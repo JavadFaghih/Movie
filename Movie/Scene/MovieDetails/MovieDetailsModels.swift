@@ -13,10 +13,6 @@ enum MovieDetails {
     // MARK: Use cases
   enum Models {
    
-      struct Request {
-   
-    
-    }
     struct MovieDetailsResponse: Codable {
         let adult: Bool?
         let backdropPath: String?
@@ -113,8 +109,14 @@ enum MovieDetails {
 
    
       struct ViewModel {
-        let title: String
+        let overView: String
         let image: Data?
+        let title: String
+        let budget: String
+        let status: String
+        let vote: String
+        let popularity: String
+        let imdb: String
         
       }
       

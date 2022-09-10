@@ -20,13 +20,13 @@ class SplashInteractor: SplashInteractorInput {
     func viewDidload() {
         worker = SplashNetWorkWorker()
      
-        worker?.requestForGetAppConfiguration { configuration in
+        worker?.requestForGetAppConfiguration { [weak self] configuration in
             /* we cache this data in a user default because we may need this data on the whole app, also as mentioned in the API documentation we won't need to call this API each time the app runs, just after some days we need to refresh it */
-            self.saveAPIConfigurationInUserDefaults(configuration: configuration)
+            self?.saveAPIConfigurationInUserDefaults(configuration)
         }
     }
 
-    private func saveAPIConfigurationInUserDefaults(configuration: Data?) {
+    private func saveAPIConfigurationInUserDefaults(_ configuration: Data?) {
         
             let defaults = UserDefaults.standard
             let key = UserDefaultsKey.apiConfiguration.rawValue

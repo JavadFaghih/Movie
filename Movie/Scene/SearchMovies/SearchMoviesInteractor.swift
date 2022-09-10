@@ -68,16 +68,7 @@ class SearchMoviesInteractor: SearchMoviesInteractorInput, SearchMoviesDataStore
                 self?.presenter?.presentMovies(response: self?.movies)
                 
             case .failure(let error):
-                
-                switch error {
-                
-                case .timeOut:
-                    self?.presenter?.presentError(with: error.description)
-                case .noData:
-                    self?.presenter?.presentError(with: error.description)
-                case .failed:
-                    self?.presenter?.presentError(with: error.description)
-                }
+                self?.presenter?.presentError(with: error.description)
             }
         }
     }

@@ -37,6 +37,8 @@ class SearchMoviesWorker { //_ items: SearchMovieResponseModel?,_ error: Network
                         return
                     }
                 }
+                complation(.failure(.failed))
+                return
             case .failure(_):
                 break
             }
