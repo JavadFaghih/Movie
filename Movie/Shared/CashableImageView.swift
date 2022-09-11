@@ -41,8 +41,8 @@ class CashableImageView: UIImageView {
                         //if dowload failed provid a place holder as default
                         DispatchQueue.main.async {
                             self.image = UIImage(named: "Logo")
-                        }
                     }
+                }
             }
         }
     }

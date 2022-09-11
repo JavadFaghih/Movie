@@ -35,7 +35,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore
             
             if  let configuration = try? JSONDecoder().decode(Splash.GetAPIConfigurationResponseModel.self, from: data) {
                 
-                return (configuration.images?.secureBaseURL ?? "https://image.tmdb.org/t/p/") + (configuration.images?.posterSizes?.last ?? "w92")
+                return (configuration.images?.secureBaseURL ?? "https://image.tmdb.org/t/p/") + (configuration.images?.backdropSizes?.first ?? "w92")
                 
             }
             return "https://image.tmdb.org/t/p/w92"

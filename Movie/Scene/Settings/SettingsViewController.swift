@@ -20,6 +20,14 @@ class SettingsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    private var isDarkMode: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: UserDefaultsKey.isDarkMode.rawValue)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKey.isDarkMode.rawValue)
+            UserDefaults.standard.synchronize()
+        }
+    }
     var interactor: SettingsViewControllerDelegate?
     var router: (NSObjectProtocol & SettingsRoutingLogic & SettingsDataPassing)?
 
@@ -73,6 +81,7 @@ class SettingsViewController: UIViewController {
     super.viewDidLoad()
     configureTableView()
       interactor?.viewDidload()
+      
   }
     
     private func configureTableView() {
@@ -101,6 +110,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource, In
      
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.resuseIdentifier) as? SettingsTableViewCell else { return UITableViewCell() }
         cell.delegate = self
+        cell.darkModeSwitch.isOn = !isDarkMode
+        
         return cell
     }
     
@@ -117,8 +128,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource, In
         view.backgroundColor = .clear
         return view
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     func darkModeSwitchStateChanged(_ sender: UISwitch) {
-        self.overrideUserInterfaceStyle = .light
+        UIApplication.shared.windows.first?.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+        isDarkMode = !sender.isOn
     }
 }
