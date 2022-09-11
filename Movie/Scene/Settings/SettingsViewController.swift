@@ -19,7 +19,6 @@ class SettingsViewController: UIViewController {
  
     
     @IBOutlet weak var tableView: UITableView!
-    
     private var isDarkMode: Bool {
         get {
             UserDefaults.standard.bool(forKey: UserDefaultsKey.isDarkMode.rawValue)
@@ -28,6 +27,7 @@ class SettingsViewController: UIViewController {
             UserDefaults.standard.synchronize()
         }
     }
+    
     var interactor: SettingsViewControllerDelegate?
     var router: (NSObjectProtocol & SettingsRoutingLogic & SettingsDataPassing)?
 

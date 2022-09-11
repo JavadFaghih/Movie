@@ -10,7 +10,7 @@ import UIKit
 
 protocol SearchMoviesPresenterDelegate: AnyObject {
  
-    func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel])
+    func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel], totalResults: String)
     func displayError(with descrptions: String)
 }
 
@@ -21,11 +21,11 @@ class SearchMoviesPresenter: SearchMoviesPresenterInput {
     weak var viewController: SearchMoviesPresenterDelegate?
   
   // MARK: Do something
-    func presentMovies(response: [SearchMovieResult]?) {
+    func presentMovies(response: [SearchMovieResult]?, totalResult: Int) {
         
         if let displayModel = response?.map({ $0.convertToDisplayableModel() }) {
         
-        self.viewController?.displayItemList(viewModel: displayModel)
+        self.viewController?.displayItemList(viewModel: displayModel, totalResults: "total results is: \(totalResult)")
         }
     }
     func presentError(with description: String) {

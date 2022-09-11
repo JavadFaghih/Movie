@@ -10,13 +10,14 @@ import Alamofire
 import Foundation
 
 protocol SearchMoviesinteractorDelegate {
-    func presentMovies(response: [SearchMovieResult]?)
+    func presentMovies(response: [SearchMovieResult]?, totalResult: Int)
     func presentError(with description: String )
 }
 
 protocol SearchMoviesDataStore {
     var items: SearchMovieResponseModel? { get }
     var movies: [SearchMovieResult] { get set}
+    var totlaResults: Int { get }
 }
 
 typealias SearchMoviesInteractorInput = SearchMoviesViewControllerDelegate
@@ -27,6 +28,7 @@ class SearchMoviesInteractor: SearchMoviesInteractorInput, SearchMoviesDataStore
     var worker: SearchMoviesWorker?
     var items: SearchMovieResponseModel?
     var movies: [SearchMovieResult] = []
+    var totlaResults: Int = 0
     private var requestPage: Int = 1
     private var movieNameSearched: String?
     
@@ -64,8 +66,9 @@ class SearchMoviesInteractor: SearchMoviesInteractorInput, SearchMoviesDataStore
             case .success(let item):
                 
                 self?.items = item
+                self?.totlaResults = item.totalResults ?? 0
                 self?.movies.append(contentsOf: item.results)
-                self?.presenter?.presentMovies(response: self?.movies)
+                self?.presenter?.presentMovies(response: self?.movies, totalResult: self?.totlaResults ?? 0)
                 
             case .failure(let error):
                 self?.presenter?.presentError(with: error.description)

@@ -23,7 +23,7 @@ class SearchMoviesViewController: MasterViewController {
     var interactor: SearchMoviesViewControllerDelegate?
     var router: (NSObjectProtocol & SearchMoviesRoutingLogic & SearchMoviesDataPassing)?
     var items: [SearchMovies.Models.SearchViewModel] = []
-    
+    var totalResults: String?
     // MARK: Object lifecycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -77,21 +77,27 @@ class SearchMoviesViewController: MasterViewController {
 
 //MARK: - Presenter Delegate
 extension SearchMoviesViewController: SearchMoviesViewControllerInput {
+  
+    func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel], totalResults: String) {
+        self.items = viewModel
+        self.totalResults = totalResults
+        tableView.reloadData()
+    }
     
     func displayError(with descrptions: String) {
         self.items.removeAll()
         self.tableView.reloadData()
+        self.totalResults = nil
         self.alert(title: "Oops!", subtitle: descrptions)
         
-    }
-    
-    func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel]) {
-        self.items = viewModel
-        tableView.reloadData()
     }
 }
 
 extension SearchMoviesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -116,6 +122,14 @@ extension SearchMoviesViewController: UITableViewDelegate, UITableViewDataSource
         if (indexPath.row + 2) == items.count {
             interactor?.requestForNexPageIfNedded()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return totalResults
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UIScreen.main.bounds.height * 0.05
     }
 }
 
