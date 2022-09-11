@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class SearchTableViewCell: UITableViewCell {
 
@@ -16,7 +15,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var originalTitleLabel: UILabel!
     @IBOutlet weak var orignialLanguageLabel: UILabel!
-    @IBOutlet weak var posterImageView: UIImageView!
+    @IBOutlet weak var posterImageView: CashableImageView!
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -41,11 +40,7 @@ class SearchTableViewCell: UITableViewCell {
         self.orignialLanguageLabel.text = model.originalLanguage
         
         if let url = URL(string: model.posterImageURL) {
-            self.posterImageView.kf.indicatorType = .activity
-            self.posterImageView.kf.setImage(with: url,
-                                             placeholder: UIImage(named: "Logo"),
-                                             options: [.cacheOriginalImage])
-            
+            self.posterImageView.loadImageWith(url: url)
         }
     }
     

@@ -72,9 +72,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore
         
         
         
-        defer {
-            presenter?.presentMovieDetails(response: viewModel)
-        }
+       
         
        
         let viewModel = MovieDetails.Models.ViewModel(overView: details.overview ?? "---",
@@ -85,6 +83,9 @@ class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore
                                                       vote: String(details.voteAverage ?? 0),
                                                       popularity: String(details.popularity ?? 0),
                                                       imdb: details.imdbID ?? "---")
+  
+        presenter?.presentMovieDetails(response: viewModel)
+
     }
     
     

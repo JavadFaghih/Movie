@@ -16,7 +16,7 @@ typealias MovieDetailsViewControllerInput = MovieDetailsPresenterDelegate
 
 class MovieDetailsViewController: UIViewController {
  
-    @IBOutlet weak var posterImageView: UIImageView!
+    @IBOutlet weak var posterImageView: CashableImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var budgetLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
