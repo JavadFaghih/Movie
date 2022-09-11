@@ -23,7 +23,7 @@ protocol SearchMoviesDataStore {
 typealias SearchMoviesInteractorInput = SearchMoviesViewControllerDelegate
 
 class SearchMoviesInteractor: SearchMoviesInteractorInput, SearchMoviesDataStore {
-    
+   
     var presenter: SearchMoviesinteractorDelegate?
     var worker: SearchMoviesWorker?
     var items: SearchMovieResponseModel?
@@ -61,18 +61,35 @@ class SearchMoviesInteractor: SearchMoviesInteractorInput, SearchMoviesDataStore
         
         worker?.requestMovie(with: word, page: page) { [weak self] response in
             
+            guard let selfs = self else { return }
+            
             switch response {
             
             case .success(let item):
                 
-                self?.items = item
-                self?.totlaResults = item.totalResults ?? 0
-                self?.movies.append(contentsOf: item.results)
-                self?.presenter?.presentMovies(response: self?.movies, totalResult: self?.totlaResults ?? 0)
+                selfs.items = item
+                selfs.totlaResults = item.totalResults ?? 0
+                selfs.movies.append(contentsOf: item.results)
+                selfs.movies = selfs.movies.sorted(by: { ($0.releaseDate?.justYear ?? "") > ($1.releaseDate?.justYear ?? "")})
+                selfs.presenter?.presentMovies(response: selfs.movies, totalResult: selfs.totlaResults)
                 
             case .failure(let error):
                 self?.presenter?.presentError(with: error.description)
             }
+        }
+    }
+    
+    func sortItemBy(_ sortType: SortType) {
+        
+        guard !movies.isEmpty else { return }
+        
+        switch sortType {
+        case .ReleaseDate:
+            self.movies = movies.sorted(by: { ($0.releaseDate?.justYear ?? "") > ($1.releaseDate?.justYear ?? "")})
+            self.presenter?.presentMovies(response: self.movies, totalResult: self.totlaResults)
+        case .Title:
+            self.movies = movies.sorted(by: { ($0.title ?? "") < ($1.title ?? "")})
+            self.presenter?.presentMovies(response: self.movies, totalResult: self.totlaResults)
         }
     }
 }

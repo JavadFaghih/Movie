@@ -19,25 +19,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Y7S-TC-t5A">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="127" width="414" height="686"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="FUr-sR-93J"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="6nf-x4-s05"/>
                                 </connections>
                             </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="5iG-Cf-ov3">
+                                <rect key="frame" x="108.5" y="92" width="197" height="32"/>
+                                <segments>
+                                    <segment title="Release Year"/>
+                                    <segment title="Title"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Y7S-TC-t5A" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="6ss-Ml-cxR"/>
                             <constraint firstItem="Y7S-TC-t5A" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="BWH-bq-QEo"/>
+                            <constraint firstItem="Y7S-TC-t5A" firstAttribute="top" secondItem="5iG-Cf-ov3" secondAttribute="bottom" constant="4" id="DrU-FG-dt2"/>
+                            <constraint firstItem="5iG-Cf-ov3" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="px4-QG-NSI"/>
+                            <constraint firstItem="5iG-Cf-ov3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rdU-5L-2hU"/>
                             <constraint firstItem="Y7S-TC-t5A" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="vBD-vS-3NI"/>
                             <constraint firstItem="Y7S-TC-t5A" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="wAo-ya-ddl"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rfk-sL-2FN"/>
                     <connections>
+                        <outlet property="segmentControll" destination="5iG-Cf-ov3" id="tXN-si-m2A"/>
                         <outlet property="tableView" destination="Y7S-TC-t5A" id="YA4-vw-M5R"/>
                         <segue destination="q9B-wK-EDI" kind="show" identifier="MovieDetailsViewController" id="vno-KS-ejE"/>
                     </connections>

@@ -12,6 +12,7 @@ protocol SearchMoviesViewControllerDelegate {
     func viewDidLoad()
     func requestForSearchMovie(with: String)
     func requestForNexPageIfNedded()
+    func sortItemBy(_ sortType: SortType)
 }
 
 typealias SearchMoviesViewControllerInput = SearchMoviesPresenterDelegate
@@ -19,6 +20,7 @@ typealias SearchMoviesViewControllerInput = SearchMoviesPresenterDelegate
 class SearchMoviesViewController: MasterViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentControll: UISegmentedControl!
     
     var interactor: SearchMoviesViewControllerDelegate?
     var router: (NSObjectProtocol & SearchMoviesRoutingLogic & SearchMoviesDataPassing)?
@@ -57,6 +59,7 @@ class SearchMoviesViewController: MasterViewController {
         interactor?.viewDidLoad()
         configureSearchController()
         configureTableView()
+        configureSegmentControll()
     }
     
     private func configureSearchController() {
@@ -73,6 +76,19 @@ class SearchMoviesViewController: MasterViewController {
         tableView.tableFooterView = UIView()
         
     }
+    
+    private func configureSegmentControll() {
+        segmentControll.addTarget(self, action: #selector(segmentControlValueChanged), for: .valueChanged)
+    }
+    
+    @objc private func segmentControlValueChanged(_ sender: UISegmentedControl) {
+       
+        if sender.selectedSegmentIndex == 0 {
+            interactor?.sortItemBy(.ReleaseDate)
+        } else {
+            interactor?.sortItemBy(.Title)
+        }
+    }
 }
 
 //MARK: - Presenter Delegate
@@ -86,8 +102,8 @@ extension SearchMoviesViewController: SearchMoviesViewControllerInput {
     
     func displayError(with descrptions: String) {
         self.items.removeAll()
-        self.tableView.reloadData()
         self.totalResults = nil
+        self.tableView.reloadData()
         self.alert(title: "Oops!", subtitle: descrptions)
         
     }
@@ -141,4 +157,9 @@ extension SearchMoviesViewController: UISearchBarDelegate {
     }
     
     
+}
+
+enum SortType {
+    case ReleaseDate
+    case Title
 }
