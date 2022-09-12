@@ -25,8 +25,8 @@
 - [x] Find Films info by it's name
 - [x] In both Dark and Light Mode
 - [x] Find Film rate on IMDB
+- [x] Find and sort movies by it name or release date
 - [ ] Support Multi Languages
-- [ ] Find and sort movies by it name or release date
 
 ## Technologies
 - [x] Clean architecture
