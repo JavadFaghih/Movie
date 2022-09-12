@@ -12,7 +12,7 @@ protocol InterfaceModeDelegate: AnyObject {
     func darkModeSwitchStateChanged(_ sender: UISwitch)
 }
 
-class SettingsTableViewCell: UITableViewCell {
+class SettingsTableViewCell: MasterTableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var darkModeSwitch: UISwitch!
@@ -25,19 +25,9 @@ class SettingsTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.contentView.layer.cornerRadius = 8
         self.clipsToBounds = true
 
     }
-    
-    override func layoutSubviews() {
-          super.layoutSubviews()
-        
-          let margins = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
-          contentView.frame = contentView.frame.inset(by: margins)
-          contentView.layer.cornerRadius = 8
-    }
-
     
     @IBAction func darkModeSwitchchanged(_ sender: UISwitch) {
         

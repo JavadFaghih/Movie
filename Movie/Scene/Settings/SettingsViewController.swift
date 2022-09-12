@@ -72,7 +72,6 @@ class SettingsViewController: UIViewController {
     override func loadView() {
         super.loadView()
         tableView.tableFooterView = UIView()
-      //  tableView.backgroundColor = .placeholderText
     }
     
   
@@ -86,6 +85,7 @@ class SettingsViewController: UIViewController {
     
     private func configureTableView() {
         tableView.register(UINib(nibName: SettingsTableViewCell.resuseIdentifier, bundle: Bundle.main), forCellReuseIdentifier: SettingsTableViewCell.resuseIdentifier)
+        tableView.register(UINib(nibName: LanguageTableViewCell.reuseIdentifier, bundle: Bundle.main), forCellReuseIdentifier: LanguageTableViewCell.reuseIdentifier)
     }
 }
 
@@ -100,8 +100,6 @@ extension SettingsViewController: SettingsViewControllerInput {
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource, InterfaceModeDelegate {
     
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -109,10 +107,13 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource, In
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
      
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.resuseIdentifier) as? SettingsTableViewCell else { return UITableViewCell() }
+        guard let languageCell = tableView.dequeueReusableCell(withIdentifier: LanguageTableViewCell.reuseIdentifier) as? LanguageTableViewCell else { return UITableViewCell() }
+        
         cell.delegate = self
         cell.darkModeSwitch.isOn = !isDarkMode
         
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
