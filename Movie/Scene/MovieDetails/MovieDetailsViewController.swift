@@ -3,12 +3,11 @@
 //  Movie
 //
 //  Created by javad faghih on 9/6/22.
-//  Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+//  Copyright (c) 2022 Javad Faghih. All rights reserved.
 
 import UIKit
 
 protocol MovieDetailsViewControllerDelegate {
-
     func viewDidload()
 }
 
@@ -16,6 +15,15 @@ typealias MovieDetailsViewControllerInput = MovieDetailsPresenterDelegate
 
 class MovieDetailsViewController: UIViewController {
  
+    @IBOutlet weak var posterImageView: CashableImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var budgetLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var voteAverageLabel: UILabel!
+    @IBOutlet weak var popularityLabel: UILabel!
+    @IBOutlet weak var imdbIDlabel: UILabel!
+    @IBOutlet weak var overViewLabel: UILabel!
+    
     var interactor: MovieDetailsViewControllerDelegate?
     var router: (NSObjectProtocol & MovieDetailsRoutingLogic & MovieDetailsDataPassing)?
 
@@ -46,17 +54,6 @@ class MovieDetailsViewController: UIViewController {
     router.dataStore = interactor
   }
   
-  // MARK: Routing
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-  
-      if let scene = segue.identifier {
-      let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-      if let router = router, router.responds(to: selector) {
-        router.perform(selector, with: segue)
-      }
-    }
-  }
-  
   // MARK: View lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -69,7 +66,14 @@ class MovieDetailsViewController: UIViewController {
 extension MovieDetailsViewController: MovieDetailsViewControllerInput {
    
     func displayItemList(viewModel: MovieDetails.Models.ViewModel) {
-      //nameTextField.text = viewModel.name
+        posterImageView.image = viewModel.image != nil ?  UIImage(data: viewModel.image!) : UIImage(named: "Logo")
+        overViewLabel.text = viewModel.overView
+        titleLabel.text = viewModel.title
+        budgetLabel.text = viewModel.budget
+        statusLabel.text = viewModel.status
+        voteAverageLabel.text = viewModel.vote
+        popularityLabel.text = viewModel.popularity
+        imdbIDlabel.text = viewModel.imdb
         
     }
 }

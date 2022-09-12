@@ -3,14 +3,14 @@
 //  Movie
 //
 //  Created by javad faghih on 9/6/22.
-//  Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+//  Copyright (c) 2022 Javad Faghih. All rights reserved.
 //
 
 import UIKit
 
 @objc protocol SearchMoviesRoutingLogic {
 
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func navigateToDetailsMovie(with index: Int)
 }
 
 protocol SearchMoviesDataPassing {
@@ -19,31 +19,26 @@ protocol SearchMoviesDataPassing {
 }
 
 class SearchMoviesRouter: NSObject, SearchMoviesRoutingLogic, SearchMoviesDataPassing {
-
+   
     weak var viewController: SearchMoviesViewController?
     var dataStore: SearchMoviesDataStore?
     private  let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
-    
   // MARK: Routing
-  //func routeToSomewhere(segue: UIStoryboardSegue?) {
-  
-  //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-  //  }
-
-
+    func navigateToDetailsMovie(with index: Int) {
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsViewController") as! MovieDetailsViewController
+        var destinationDS = destinationVC.router!.dataStore!
+        passDataToMovieDetails(source: dataStore!, destination: &destinationDS, index: index)
+        navigateToMovieDetails(source: viewController!, destination: destinationVC)
+    }
+ 
   // MARK: Navigation
-  //func navigateToSomewhere(source: SearchMoviesViewController, destination: SomewhereViewController) {
-  //  source.show(destination, sender: nil)
-  //}
+  func navigateToMovieDetails(source: SearchMoviesViewController, destination: MovieDetailsViewController) {
+    source.show(destination, sender: nil)
+  }
   
-  // MARK: Passing data
-    
-  //func passDataToSomewhere(source: SearchMoviesDataStore, destination: inout SomewhereDataStore)
-  //{
-  //  destination.name = source.name
-  //}
+ //  MARK: Passig data
+    func passDataToMovieDetails(source: SearchMoviesDataStore, destination: inout MovieDetailsDataStore, index: Int)  {
+        destination.id = source.movies[index].id ?? 0
+  }
 }

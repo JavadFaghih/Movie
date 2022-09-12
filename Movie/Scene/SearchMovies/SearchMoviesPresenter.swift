@@ -10,19 +10,24 @@ import UIKit
 
 protocol SearchMoviesPresenterDelegate: AnyObject {
  
-    func displayItemList(viewModel: SearchMovies.Models.ViewModel)
+    func displayItemList(viewModel: [SearchMovies.Models.SearchViewModel], totalResults: String)
+    func displayError(with descrptions: String)
 }
 
 typealias SearchMoviesPresenterInput = SearchMoviesinteractorDelegate
 
 class SearchMoviesPresenter: SearchMoviesPresenterInput {
- 
+
     weak var viewController: SearchMoviesPresenterDelegate?
   
-  // MARK: Do something
-  func presentSomething(response: SearchMovies.Models.Response) {
-  
-      let viewModel = SearchMovies.Models.ViewModel()
-    viewController?.displayItemList(viewModel: viewModel)
-  }
+    func presentMovies(response: [SearchMovies.Models.SearchMovieResult]?, totalResult: Int) {
+        
+        if let displayModel = response?.map({ $0.convertToDisplayableModel() }) {
+        
+        self.viewController?.displayItemList(viewModel: displayModel, totalResults: "total results is: \(totalResult)")
+        }
+    }
+    func presentError(with description: String) {
+        self.viewController?.displayError(with: description)
+    }
 }

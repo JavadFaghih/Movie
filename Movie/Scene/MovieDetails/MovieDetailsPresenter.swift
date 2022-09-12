@@ -16,13 +16,14 @@ protocol MovieDetailsPresenterDelegate: AnyObject {
 typealias MovieDetailsPresenterInput = MovieDetailsinteractorDelegate
 
 class MovieDetailsPresenter: MovieDetailsPresenterInput {
- 
+   
     weak var viewController: MovieDetailsPresenterDelegate?
   
-  // MARK: Do something
-  func presentSomething(response: MovieDetails.Models.Response) {
-  
-      let viewModel = MovieDetails.Models.ViewModel()
-    viewController?.displayItemList(viewModel: viewModel)
-  }
+    func presentMovieDetails(response: MovieDetails.Models.ViewModel) {
+        
+        viewController?.displayItemList(viewModel: response)
+    }
+    func presentError(message: String) {
+        
+    }
 }
