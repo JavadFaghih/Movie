@@ -21,14 +21,6 @@ class SettingsTableViewCell: MasterTableViewCell {
     
     weak var delegate: InterfaceModeDelegate?
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        self.clipsToBounds = true
-
-    }
-    
     @IBAction func darkModeSwitchchanged(_ sender: UISwitch) {
         
         self.delegate?.darkModeSwitchStateChanged(sender)

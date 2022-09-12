@@ -17,22 +17,6 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var orignialLanguageLabel: UILabel!
     @IBOutlet weak var posterImageView: CashableImageView!
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    commenInit()
-    }
-    
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        commenInit()
-    }
-
-
-    private func commenInit() {
-       
-    }
-    
     func configureCell(with model: SearchMovies.Models.SearchViewModel) {
         self.titleLabel.text = model.title
         self.originalTitleLabel.text = model.originalTitle
@@ -42,10 +26,5 @@ class SearchTableViewCell: UITableViewCell {
         if let url = URL(string: model.posterImageURL) {
             self.posterImageView.loadImageWith(url: url)
         }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-       // self.posterImageView.image = nil
     }
 }

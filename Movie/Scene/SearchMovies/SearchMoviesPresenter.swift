@@ -20,8 +20,7 @@ class SearchMoviesPresenter: SearchMoviesPresenterInput {
 
     weak var viewController: SearchMoviesPresenterDelegate?
   
-  // MARK: Do something
-    func presentMovies(response: [SearchMovieResult]?, totalResult: Int) {
+    func presentMovies(response: [SearchMovies.Models.SearchMovieResult]?, totalResult: Int) {
         
         if let displayModel = response?.map({ $0.convertToDisplayableModel() }) {
         

@@ -3,7 +3,7 @@
 //  Movie
 //
 //  Created by javad faghih on 9/6/22.
-//  Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+//  Copyright (c) 2022 Javad Faghih. All rights reserved.
 //
 
 import UIKit
@@ -28,17 +28,17 @@ class SearchMoviesRouter: NSObject, SearchMoviesRoutingLogic, SearchMoviesDataPa
     func navigateToDetailsMovie(with index: Int) {
         let destinationVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsViewController") as! MovieDetailsViewController
         var destinationDS = destinationVC.router!.dataStore!
-        passDataToSomewhere(source: dataStore!, destination: &destinationDS, index: index)
-        navigateToSomewhere(source: viewController!, destination: destinationVC)
+        passDataToMovieDetails(source: dataStore!, destination: &destinationDS, index: index)
+        navigateToMovieDetails(source: viewController!, destination: destinationVC)
     }
  
   // MARK: Navigation
-  func navigateToSomewhere(source: SearchMoviesViewController, destination: MovieDetailsViewController) {
+  func navigateToMovieDetails(source: SearchMoviesViewController, destination: MovieDetailsViewController) {
     source.show(destination, sender: nil)
   }
   
  //  MARK: Passig data
-    func passDataToSomewhere(source: SearchMoviesDataStore, destination: inout MovieDetailsDataStore, index: Int)  {
+    func passDataToMovieDetails(source: SearchMoviesDataStore, destination: inout MovieDetailsDataStore, index: Int)  {
         destination.id = source.movies[index].id ?? 0
   }
 }

@@ -17,7 +17,6 @@ typealias SettingsViewControllerInput = SettingsPresenterDelegate
 
 class SettingsViewController: UIViewController {
  
-    
     @IBOutlet weak var tableView: UITableView!
     private var isDarkMode: Bool {
         get {
@@ -53,28 +52,15 @@ class SettingsViewController: UIViewController {
     viewController.interactor = interactor
     viewController.router = router
     interactor.presenter = presenter
-    presenter.viewController = viewController
     router.viewController = viewController
     router.dataStore = interactor
   }
-  
-  // MARK: Routing
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-  
-      if let scene = segue.identifier {
-      let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-      if let router = router, router.responds(to: selector) {
-        router.perform(selector, with: segue)
-      }
-    }
-  }
-    
+
     override func loadView() {
         super.loadView()
         tableView.tableFooterView = UIView()
     }
     
-  
   // MARK: View lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -89,15 +75,6 @@ class SettingsViewController: UIViewController {
     }
 }
 
-     //MARK: - Presenter Delegate
-extension SettingsViewController: SettingsViewControllerInput {
-   
-    func displayItemList(viewModel: Settings.Models.ViewModel) {
-      //nameTextField.text = viewModel.name
-        
-    }
-}
-
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource, InterfaceModeDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -107,7 +84,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource, In
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
      
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.resuseIdentifier) as? SettingsTableViewCell else { return UITableViewCell() }
-        guard let languageCell = tableView.dequeueReusableCell(withIdentifier: LanguageTableViewCell.reuseIdentifier) as? LanguageTableViewCell else { return UITableViewCell() }
+        guard tableView.dequeueReusableCell(withIdentifier: LanguageTableViewCell.reuseIdentifier) is LanguageTableViewCell else { return UITableViewCell() }
         
         cell.delegate = self
         cell.darkModeSwitch.isOn = !isDarkMode

@@ -10,7 +10,6 @@ import UIKit
 
 protocol SettingsPresenterDelegate: AnyObject {
  
-    func displayItemList(viewModel: Settings.Models.ViewModel)
 }
 
 typealias SettingsPresenterInput = SettingsinteractorDelegate
@@ -18,11 +17,5 @@ typealias SettingsPresenterInput = SettingsinteractorDelegate
 class SettingsPresenter: SettingsPresenterInput {
  
     weak var viewController: SettingsPresenterDelegate?
-  
-  // MARK: Do something
-  func presentSomething(response: Settings.Models.Response) {
-  
-      let viewModel = Settings.Models.ViewModel()
-    viewController?.displayItemList(viewModel: viewModel)
-  }
+    
 }

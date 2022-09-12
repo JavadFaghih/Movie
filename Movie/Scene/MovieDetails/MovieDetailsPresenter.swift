@@ -17,7 +17,6 @@ typealias MovieDetailsPresenterInput = MovieDetailsinteractorDelegate
 
 class MovieDetailsPresenter: MovieDetailsPresenterInput {
    
- 
     weak var viewController: MovieDetailsPresenterDelegate?
   
     func presentMovieDetails(response: MovieDetails.Models.ViewModel) {
@@ -27,5 +26,4 @@ class MovieDetailsPresenter: MovieDetailsPresenterInput {
     func presentError(message: String) {
         
     }
-    
 }

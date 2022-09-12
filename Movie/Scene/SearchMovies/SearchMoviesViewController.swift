@@ -155,8 +155,6 @@ extension SearchMoviesViewController: UISearchBarDelegate {
         guard let text = searchBar.text else { return }
         interactor?.requestForSearchMovie(with: text)
     }
-    
-    
 }
 
 enum SortType {

@@ -9,7 +9,6 @@
 import UIKit
 
 protocol MovieDetailsinteractorDelegate {
-
     func presentMovieDetails(response: MovieDetails.Models.ViewModel)
     func presentError(message: String)
 }
@@ -43,7 +42,6 @@ class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore
     }
     var image: Data?
    
-    
     // MARK: Do something
     func viewDidload() {
         
@@ -70,11 +68,6 @@ class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore
     
     private func releaseDetails(with details: MovieDetails.Models.MovieDetailsResponse) {
         
-        
-        
-       
-        
-       
         let viewModel = MovieDetails.Models.ViewModel(overView: details.overview ?? "---",
                                                       image: image,
                                                       title: details.title ?? "---",
@@ -85,7 +78,6 @@ class MovieDetailsInteractor: MovieDetailsInteractorInput, MovieDetailsDataStore
                                                       imdb: details.imdbID ?? "---")
   
         presenter?.presentMovieDetails(response: viewModel)
-
     }
     
     
