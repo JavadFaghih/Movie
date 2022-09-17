@@ -70,7 +70,6 @@ class SearchMoviesInteractor: SearchMoviesInteractorInput, SearchMoviesDataStore
                 selfs.items = item
                 selfs.totlaResults = item.totalResults ?? 0
                 selfs.movies.append(contentsOf: item.results)
-                selfs.movies = selfs.movies.sorted(by: { ($0.releaseDate?.justYear ?? "") > ($1.releaseDate?.justYear ?? "")})
                 selfs.presenter?.presentMovies(response: selfs.movies, totalResult: selfs.totlaResults)
                 
             case .failure(let error):
